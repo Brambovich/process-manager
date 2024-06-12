@@ -47,13 +47,15 @@ Here is a table of all the possible options per process.
 |`autoRestart`|Set to true to have the process automatically be restarted when it closes. Mutually exclusive with `after`|No|
 |`after`|The name of the process, **this** process should be run after. Mutually exclusive with `autoRestart`|No|
 |`workDir`|The working directory of the process when executed|No|
+|`delay`|Time to delay before starting the process|No|
 
 A more involved example:
 ```json
 [
   {
     "name": "echo",
-    "command": "echo 'this is a test'"
+    "command": "echo 'this is a test'",
+    "delay": 3
   },
   {
     "name": "gfs",
@@ -74,7 +76,7 @@ A more involved example:
 ]
 ```
 
-This starts a single echo process that write `'this is a test'` to the terminal. 
+This starts a single echo process that write `'this is a test'` to the terminal after 3 seconds. 
 Then it starts a [GFS](https://github.com/zlepper/gfs) process. 
 At the same time another echo process is started, writing `'this is echo 2'` to the terminal.
 Then yet another echo process start, that write `'this is echo 3'` to the terminal.

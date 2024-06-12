@@ -16,6 +16,7 @@ type processJson struct {
 	AutoRestart      bool   `json:"autoRestart"`
 	After            string `json:"after"`
 	WorkingDirectory string `json:"workDir"`
+	Delay            int    `json:"delay"`
 }
 
 // The main process manager, managing processes
@@ -100,8 +101,8 @@ func (p *ProcessManager) buildOneProcess(pj *processJson) (*Process, error) {
 	process := &Process{
 		Name:        pj.Name,
 		AutoRestart: pj.AutoRestart,
+		Delay:       pj.Delay,
 	}
-
 	tokens := Tokenize(pj.Command)
 	process.Command = tokens[0]
 	process.Args = tokens[1:]

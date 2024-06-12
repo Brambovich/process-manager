@@ -28,6 +28,8 @@ type Process struct {
 	after string
 	// The name of the directory the process should be run in
 	WorkingDirectory string
+	// Delay of the process, how long to wait before startin it.
+	Delay int
 }
 
 func (p *Process) restart(ctx context.Context) (err error) {
@@ -43,6 +45,10 @@ func (p *Process) restart(ctx context.Context) (err error) {
 
 // Runs the actual process
 func (p *Process) Run(ctx context.Context) error {
+	if p.Delay != 0 {
+		time.Sleep(time.Duration(p.Delay) * time.Second)
+	}
+
 	log.Printf("[%s] Starting process..\n", p.Name)
 
 	var command string
