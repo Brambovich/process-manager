@@ -2,12 +2,14 @@ package main
 
 import (
 	"context"
-	"golang.org/x/sync/errgroup"
 	"log"
 	"os"
 	"os/exec"
+	"path"
 	"sync"
 	"time"
+
+	"golang.org/x/sync/errgroup"
 )
 
 // Describes a single process
@@ -41,11 +43,17 @@ func (p *Process) restart(ctx context.Context) (err error) {
 
 // Runs the actual process
 func (p *Process) Run(ctx context.Context) error {
-	log.Printf("Starting process '%s'\n", p.Name)
+	log.Printf("[%s] Starting process..\n", p.Name)
 
-	command, err := exec.LookPath(p.Command)
-	if err != nil {
-		return err
+	var command string
+	var err error
+	if p.WorkingDirectory != "." && !path.IsAbs(p.Command) {
+		command = p.Command
+	} else {
+		command, err = exec.LookPath(p.Command)
+		if err != nil {
+			return err
+		}
 	}
 
 	cmd := exec.Command(command, p.Args...)
@@ -62,7 +70,6 @@ func (p *Process) Run(ctx context.Context) error {
 	if err != nil {
 		return err
 	}
-
 	go func() {
 		done <- cmd.Wait()
 	}()

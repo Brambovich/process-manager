@@ -4,9 +4,10 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
-	"golang.org/x/sync/errgroup"
 	"log"
 	"os"
+
+	"golang.org/x/sync/errgroup"
 )
 
 type processJson struct {
